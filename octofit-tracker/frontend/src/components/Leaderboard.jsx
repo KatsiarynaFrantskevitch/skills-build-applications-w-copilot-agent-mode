@@ -11,7 +11,12 @@ export default function Leaderboard() {
 
     async function loadLeaderboard() {
       try {
-        const response = await fetch(buildApiUrl('leaderboard'));
+        const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
+        const apiUrl = codespaceName
+          ? `https://${codespaceName}-8000.app.github.dev/api/leaderboard/`
+          : 'http://localhost:8000/api/leaderboard/';
+
+        const response = await fetch(apiUrl || buildApiUrl('leaderboard'));
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }

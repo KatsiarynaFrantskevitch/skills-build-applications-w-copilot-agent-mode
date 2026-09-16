@@ -11,7 +11,12 @@ export default function Activities() {
 
     async function loadActivities() {
       try {
-        const response = await fetch(buildApiUrl('activities'));
+        const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
+        const apiUrl = codespaceName
+          ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+          : 'http://localhost:8000/api/activities/';
+
+        const response = await fetch(apiUrl || buildApiUrl('activities'));
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
